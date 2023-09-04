@@ -6,22 +6,6 @@ import { BaseClient, Issuer } from "openid-client";
  */
 class EntreeAuthenticationManager {   
     /**
-     * The singleton instance of this class.
-     */ 
-    private static instance: EntreeAuthenticationManager;
-
-    /**
-     * Gets the singleton instance of this class.
-     */
-    public static getInstance(): EntreeAuthenticationManager {
-        if (!EntreeAuthenticationManager.instance) {
-            EntreeAuthenticationManager.instance = new EntreeAuthenticationManager();
-        }
-
-        return EntreeAuthenticationManager.instance;
-    }
-
-    /**
      * The client used to communicate with Entree.
      */
     private client?: BaseClient;
