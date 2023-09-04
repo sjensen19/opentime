@@ -109,7 +109,7 @@ app.get("/oauth2", async (req: Request, res: Response) => {
         req.session.authenticated = true;
 
         let entree_user = await client.userinfo(tokens);
-        console.log(entree_user);
+        
         req.session.entree_user = {
             eduPersonAffiliation: String(entree_user.eduPersonAffiliation),
             givenName: String(entree_user.givenName),
