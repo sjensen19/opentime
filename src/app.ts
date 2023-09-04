@@ -33,8 +33,10 @@ app.use(session({
     secret: String(process.env.SESSION_SECRET), 
     resave: true, 
     saveUninitialized: true, 
+    // Cookie expires before the access token expires
+    // This means that the user will be logged out and their session will be destroyed before the access token expires
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 86000
     }
 }));
 
@@ -44,7 +46,9 @@ app.set("view engine", "ejs");
 app.get("/", async (req: Request, res: Response) => {
     if(!req.session.authenticated) return res.redirect("/oauth2");
 
-    return res.render("index");
+    return res.render("index", {
+        entree_user: req.session.entree_user
+    });
 });
 
 app.get("/agenda", async (req: Request, res: Response) => {
@@ -98,6 +102,8 @@ app.get("/oauth2", async (req: Request, res: Response) => {
         let client = await EntreeAuthenticationManager.initializeClient();
 
         req.session.authorized = true;
+
+        // Redirect to the entree authorization page
         return res.redirect(client.authorizationUrl());
     }
 
@@ -109,11 +115,11 @@ app.get("/oauth2", async (req: Request, res: Response) => {
         req.session.authenticated = true;
 
         let entree_user = await client.userinfo(tokens);
-        
+
         req.session.entree_user = {
-            eduPersonAffiliation: String(entree_user.eduPersonAffiliation),
-            givenName: String(entree_user.givenName),
-            sn: String(entree_user.sn)
+            eduPersonAffiliation: String(entree_user.eduPersonAffiliation), // Primary user group
+            givenName: String(entree_user.givenName), // First name
+            sn: String(entree_user.sn) // Last name
         }
 
         return res.redirect("/");
