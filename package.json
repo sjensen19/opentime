@@ -4,7 +4,7 @@
   "description": "OpenTime is a scheduling program used by students and teachers",
   "main": "app.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only ./app.ts"
+    "dev": "ts-node-dev --respawn --transpile-only ./src/app.ts"
   },
   "keywords": [],
   "author": "",
