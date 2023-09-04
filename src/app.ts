@@ -108,24 +108,24 @@ app.get("/oauth2", async (req: Request, res: Response) => {
     }
 
     if(req.query.code) {
-        let client = await EntreeAuthenticationManager.initializeClient();
-        let tokens = await client.callback(process.env.KN_REDIRECT_URI, { code: req.query.code as string });
-        
-        req.session.tokens = tokens;
-        req.session.authenticated = true;
+        setTimeout(async function() {
+            let client = await EntreeAuthenticationManager.initializeClient();
+            let tokens = await client.callback(process.env.KN_REDIRECT_URI, { code: req.query.code as string });
+            
+            req.session.tokens = tokens;
+            req.session.authenticated = true;
 
-        let entree_user = await client.userinfo(tokens);
+            let entree_user = await client.userinfo(tokens);
 
-        req.session.entree_user = {
-            eduPersonAffiliation: String(entree_user.eduPersonAffiliation), // Primary user group
-            givenName: String(entree_user.givenName), // First name
-            sn: String(entree_user.sn) // Last name
-        }
+            req.session.entree_user = {
+                eduPersonAffiliation: String(entree_user.eduPersonAffiliation), // Primary user group
+                givenName: String(entree_user.givenName), // First name
+                sn: String(entree_user.sn) // Last name
+            }
 
-        return res.redirect("/");
+            return res.redirect("/");
+        }, 100)
     }
-
-    return res.redirect("/");
 });
 
 app.listen(3000, async () => {
