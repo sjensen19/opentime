@@ -21,7 +21,7 @@ app.use(session({
     }
 }));
 
-app.set("views", "./views");
+app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
 app.get("/", async (req: Request, res: Response) => {
