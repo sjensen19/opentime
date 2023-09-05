@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opentime - Dashboard</title>
+
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="stylesheet" href="/fa/css/font-awesome.css">
+
+    <script defer src="/js/preline.js"></script>
+</head>
+<body>
+    <%- include("partials/sidebar.ejs") %>
+    <div class="w-full pt-10 px-4 sm:px-6 md:px-8 lg:pl-72">
+        <header>
+            <% 
+            let last_name = entree_user.sn;
+            let last_name_split = last_name.split(", ");
+            if(last_name_split.length > 1) {
+                last_name = last_name_split[1] + " " + last_name_split[0];
+            }
+            %>
+            <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">Welkom, <%= entree_user.givenName %> <%= last_name %></h1>
+            <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">Welkom bij opentime</p>
+        </header>
+    </div>
+</body>
+</html>
