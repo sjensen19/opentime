@@ -106,26 +106,24 @@ app.get("/oauth2", async (req: Request, res: Response) => {
         // Redirect to the entree authorization page
         return res.redirect(client.authorizationUrl());
     }
-
-    if(req.query.code) {
-        setTimeout(async function() {
-            let client = await EntreeAuthenticationManager.initializeClient();
-            let tokens = await client.callback(process.env.KN_REDIRECT_URI, { code: req.query.code as string });
+    
+    setTimeout(async function() {
+        let client = await EntreeAuthenticationManager.initializeClient();
+        let tokens = await client.callback(process.env.KN_REDIRECT_URI, { code: req.query.code as string });
             
-            req.session.tokens = tokens;
-            req.session.authenticated = true;
+        req.session.tokens = tokens;
+        req.session.authenticated = true;
 
-            let entree_user = await client.userinfo(tokens);
+        let entree_user = await client.userinfo(tokens);
 
-            req.session.entree_user = {
-                eduPersonAffiliation: String(entree_user.eduPersonAffiliation), // Primary user group
-                givenName: String(entree_user.givenName), // First name
-                sn: String(entree_user.sn) // Last name
-            }
+        req.session.entree_user = {
+            eduPersonAffiliation: String(entree_user.eduPersonAffiliation), // Primary user group
+            givenName: String(entree_user.givenName), // First name
+            sn: String(entree_user.sn) // Last name
+        }
 
-            return res.redirect("/");
-        }, 100)
-    }
+        return res.redirect("/");
+    }, 100);
 });
 
 app.listen(3000, async () => {
