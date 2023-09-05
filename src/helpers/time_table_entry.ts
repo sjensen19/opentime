@@ -23,7 +23,7 @@ export class TimeTableEntry {
      * Gets all entries from the database sorted by date
      * @returns all entries
      */
-    public static async getAll(): Promise<ITimeTableEntry[]> {
+    public static async all(): Promise<ITimeTableEntry[]> {
         let query = "SELECT * FROM timetable ORDER BY date ASC";
         
         let entries = await Database.getInstance().sendQuery(query);
@@ -35,7 +35,7 @@ export class TimeTableEntry {
      * @param group group to get entries from
      * @returns all entries
      */
-    public static async getEntriesByGroup(group: string): Promise<ITimeTableEntry[]> {
+    public static async entriesByGroup(group: string): Promise<ITimeTableEntry[]> {
         let query = "SELECT * FROM timetable WHERE edu_group = ? ORDER BY date ASC";
         
         let entries = await Database.getInstance().sendQuery(query, [group]);
@@ -46,7 +46,7 @@ export class TimeTableEntry {
      * Gets all entries by teacher from the database sorted by date
      * @param teacherId id of the teacher to get entries from
      */
-    public static async getEntriesByTeacher(teacherId: number): Promise<ITimeTableEntry[]> {
+    public static async entriesByTeacher(teacherId: number): Promise<ITimeTableEntry[]> {
         let query = "SELECT * FROM timetable WHERE teacher_id = ? ORDER BY date ASC";
         
         let entries = await Database.getInstance().sendQuery(query, [teacherId]);
@@ -58,7 +58,7 @@ export class TimeTableEntry {
      * @param week week to get entries from
      * @returns all entries
      */
-    public static async getEntriesPerWeek(group: string, week: number): Promise<ITimeTableEntry[]> {
+    public static async entriesPerWeek(group: string, week: number): Promise<ITimeTableEntry[]> {
         let query = "SELECT * FROM timetable WHERE edu_group = ? AND WEEK(date) = ? ORDER BY date ASC";
         
         let entries = await Database.getInstance().sendQuery(query, [group, week]);
