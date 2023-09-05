@@ -16,6 +16,13 @@ const queries = [
        \`location\`    VARCHAR(20) NOT NULL,
        \`description\` VARCHAR(100) NOT NULL,
        PRIMARY KEY (\`id\`)
+    );`,
+    `CREATE TABLE \`opentime\`.\`students\`
+    (
+       \`id\`         INT NOT NULL auto_increment,
+       \`entree_uid\` VARCHAR(200) NOT NULL,
+       \`edu_group\`  VARCHAR(100) NOT NULL,
+       PRIMARY KEY (\`id\`)
     );`
 ];
 
