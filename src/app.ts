@@ -32,12 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(session({ 
     secret: String(process.env.SESSION_SECRET), 
     resave: true, 
-    saveUninitialized: true, 
-    // Cookie expires before the access token expires
-    // This means that the user will be logged out and their session will be destroyed before the access token expires
-    cookie: {
-        maxAge: 86000
-    }
+    saveUninitialized: true,
 }));
 
 app.set("views", "./src/views");
@@ -124,6 +119,17 @@ app.get("/oauth2", async (req: Request, res: Response) => {
 
         return res.redirect("/");
     }, 100);
+
+    // Refresh tokens automatically to prevent the session from expiring
+    setInterval(async function() {
+        let client = await EntreeAuthenticationManager.initializeClient();
+        let tokens = await client.refresh(req.session.tokens!.refresh_token as string);
+
+        req.session.tokens = {
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token
+        };
+    }, 86000);
 });
 
 app.listen(3000, async () => {
