@@ -129,4 +129,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-tailwind/
+src/public/css/tailwind.css
