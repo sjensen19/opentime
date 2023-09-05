@@ -118,18 +118,9 @@ app.get("/oauth2", async (req: Request, res: Response) => {
         }
 
         return res.redirect("/");
-    }, 100);
+    }, 500);
 
-    // Refresh tokens automatically to prevent the session from expiring
-    setInterval(async function() {
-        let client = await EntreeAuthenticationManager.initializeClient();
-        let tokens = await client.refresh(req.session.tokens!.refresh_token as string);
-
-        req.session.tokens = {
-            access_token: tokens.access_token,
-            refresh_token: tokens.refresh_token
-        };
-    }, 86000);
+    // TODO: Refresh tokens
 });
 
 app.listen(3000, async () => {
