@@ -65,4 +65,17 @@ export class TimeTableEntry {
         return entries as ITimeTableEntry[];
     }
 
+    /**
+     * Gets all entries for a specific date from the database sorted by date
+     * @param group group to get entries from
+     * @param date date to get entries from
+     * @returns all entries
+     */
+    public static async entriesForDate(group: string, date: string): Promise<ITimeTableEntry[]> {
+        let query = "SELECT * FROM timetable WHERE edu_group = ? AND date = ? ORDER BY date ASC";
+
+        let entries = await Database.getInstance().sendQuery(query, [group, date]);
+        return entries;
+    }
+
 }

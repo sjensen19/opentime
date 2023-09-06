@@ -6,6 +6,21 @@ import { IStudent } from "../interfaces/student";
  */
 export class Student {
     /**
+     * Creates a student if it doesn't exist
+     * @param entreeUid entree uid of the student
+     * @param eduGroup edu group of the student
+     * @returns the student
+     */
+    public static async createIfNotExists(entreeUid: string, eduGroup: string): Promise<IStudent | null> {
+        let student = await Student.byEntreeUid(entreeUid);
+        if(student) return student;
+
+        let query = "INSERT INTO students (entree_uid, edu_group) VALUES (?, ?)";
+        let result = await Database.getInstance().sendQuery(query, [entreeUid, eduGroup]);
+        return await Student.fromId(result.insertId);
+    }
+
+    /**
      * Gets a student from the database by its id
      * @param id id of the student
      * @returns the student, or null if it doesn't exist
