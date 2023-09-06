@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { BaseClient, Issuer } from "openid-client";
+import { BaseClient, Issuer, custom } from "openid-client";
 
 /**
  * This class is responsible for managing the authentication process with Entree.
@@ -19,12 +19,15 @@ class EntreeAuthenticationManager {
         }
 
         const issuer = await Issuer.discover(KN_ISSUER_URL);
-        return new issuer.Client({
+        const client = new issuer.Client({
             client_id: KN_CLIENT_ID,
             client_secret: KN_CLIENT_SECRET,
             redirect_uris: [KN_REDIRECT_URI],
             response_types: ["code"],
         });
+        client[custom.clock_tolerance] = 5;
+            
+        return client;
     }
 }
 
