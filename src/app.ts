@@ -105,7 +105,9 @@ app.get("/oauth2", async (req: Request, res: Response) => {
     setTimeout(async function() {
         let client = await EntreeAuthenticationManager.initializeClient();
         let tokens = await client.callback(process.env.KN_REDIRECT_URI, { code: req.query.code as string });
-            
+        
+        if(!tokens) return res.redirect("/oauth2");
+
         req.session.tokens = tokens;
         req.session.authenticated = true;
 
