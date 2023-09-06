@@ -19,10 +19,14 @@ declare module "express-session" {
             givenName: string;
             sn: string;
         };
+        student?: IStudent;
     }
 }
 
 import EntreeAuthenticationManager from "./authentication/entree_authentication_manager";
+import { IStudent } from './interfaces/student';
+import { Student } from './helpers/student';
+import { TimeTableEntry } from './helpers/time_table_entry';
 
 const app: Application = express();
 
@@ -42,7 +46,9 @@ app.get("/", async (req: Request, res: Response) => {
     if(!req.session.authenticated) return res.redirect("/oauth2");
 
     return res.render("index", {
-        entree_user: req.session.entree_user
+        entree_user: req.session.entree_user,
+        // today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`),
+        today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, "2023-09-18"),
     });
 });
 
@@ -105,17 +111,25 @@ app.get("/oauth2", async (req: Request, res: Response) => {
     setTimeout(async function() {
         let client = await EntreeAuthenticationManager.initializeClient();
         let tokens = await client.callback(process.env.KN_REDIRECT_URI, { code: req.query.code as string });
-            
+        
+        if(!tokens || !tokens.access_token || !tokens.refresh_token) {
+            // TODO: Redirect to error page
+        }
+
         req.session.tokens = tokens;
         req.session.authenticated = true;
 
         let entree_user = await client.userinfo(tokens);
+        console.log(entree_user);
 
         req.session.entree_user = {
             eduPersonAffiliation: String(entree_user.eduPersonAffiliation), // Primary user group
             givenName: String(entree_user.givenName), // First name
             sn: String(entree_user.sn) // Last name
         }
+
+        let student: IStudent | null = await Student.createIfNotExists(String(entree_user.mail!).split("@")[0], "GO3E-HSW1");
+        req.session.student = student!;
 
         return res.redirect("/");
     }, 500);

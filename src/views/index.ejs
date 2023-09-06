@@ -24,6 +24,23 @@
             <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">Welkom, <%= entree_user.givenName %> <%= last_name %></h1>
             <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">Welkom bij opentime</p>
         </header>
+        <section>
+            <br>
+            <h2 class="text-xl font-bold text-gray-800 sm:text-2xl dark:text-white mb-2">Vandaag</h2>
+            <% if(today.length === 0) { %>
+                <p>Er zijn geen lessen vandaag.</p>
+            <% } %>
+            <% for(let i = 0; i < today.length; i++) { %>
+                <%
+                let time_start = today[i].time_start;
+                let time_end = today[i].time_end;
+
+                time_start = time_start.substring(0, time_start.length - 3);
+                time_end = time_end.substring(0, time_end.length - 3);
+                %>
+                <%- include('components/lesson_card.ejs', { time_start: time_start, time_end: time_end, description: today[i].description, location: today[i].location }) %>
+            <% } %>
+        </section>
     </div>
 </body>
 </html>
