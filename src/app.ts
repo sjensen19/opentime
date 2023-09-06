@@ -18,6 +18,7 @@ declare module "express-session" {
             eduPersonAffiliation: string;
             givenName: string;
             sn: string;
+            mail: string;
         };
         student?: IStudent;
     }
@@ -125,7 +126,8 @@ app.get("/oauth2", async (req: Request, res: Response) => {
         req.session.entree_user = {
             eduPersonAffiliation: String(entree_user.eduPersonAffiliation), // Primary user group
             givenName: String(entree_user.givenName), // First name
-            sn: String(entree_user.sn) // Last name
+            sn: String(entree_user.sn), // Last name
+            mail: String(entree_user.mail) // Email
         }
 
         let student: IStudent | null = await Student.createIfNotExists(String(entree_user.mail!).split("@")[0], "GO3E-HSW1");
