@@ -1,4 +1,4 @@
-import Database from "../database/database";
+import Database from "../src/database/database";
 
 import * as dotenv from 'dotenv';
 dotenv.config();
