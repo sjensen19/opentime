@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin" />
+    <title>opentime - Agenda</title>
+
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer src="/js/preline.js"></script>
+</head>
+<body>
+    <% 
+        let last_name = entree_user.sn;
+        let last_name_split = last_name.split(", ");
+        if(last_name_split.length > 1) {
+            last_name = last_name_split[1] + " " + last_name_split[0];
+        }
+    %>
+    <%- include("partials/header.ejs", { entree_user: entree_user, last_name: last_name }) %>
+    <%- include("partials/sidebar.ejs", { entree_user: entree_user, last_name: last_name, page: "Agenda" }) %>
+    <div class="w-full pt-10 px-4 sm:px-6 md:px-8 lg:pl-72">
+        <header>
+            <!-- <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">Week <%= week %></h1> -->
+            <%- include("components/week_selector.ejs", { week: week }) %>
+        </header>
+        <%
+        let currentDate = null;
+        if(classes.length !== 0) {
+            currentDate = new Date(classes[0].date).toLocaleString("nl-NL", { dateStyle: "full" });
+        } 
+        %>
+        <section>
+            <br>
+            <% if(classes.length === 0) { %>
+                <p>Er zijn geen lessen deze week.</p>
+            <% } else {%>
+                <h2 class="text-xl font-bold text-gray-800 sm:text-2xl dark:text-white mb-2"><%= currentDate %></h2>
+                <% for(let c of classes) { %>
+                    <% 
+                    let date = new Date(c.date).toLocaleString("nl-NL", { dateStyle: "full" });
+                    let time_start = c.time_start;
+                    let time_end = c.time_end;
+
+                    time_start = time_start.substring(0, time_start.length - 3);
+                    time_end = time_end.substring(0, time_end.length - 3);
+                    %>
+                    <% if(currentDate !== date) { %>
+                        <% currentDate = date; %>
+                        <br>
+                        <h2 class="text-xl font-bold text-gray-800 sm:text-2xl dark:text-white mb-2"><%= currentDate %></h2>
+                    <% } %>
+                    <%- include('components/lesson_card.ejs', { time_start: time_start, time_end: time_end, description: c.description, location: c.location }) %>
+                <% } %>
+            <% } %>
+            <br>
+        </section>
+    </div>
+</body>
+</html>
