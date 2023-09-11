@@ -1,0 +1,26 @@
+<%
+  let nextWeek = parseInt(week) + 1;
+  let prevWeek = parseInt(week) - 1;
+
+  if(nextWeek > 52) {
+    nextWeek = 1;
+  }
+
+  if(prevWeek < 1) {
+    prevWeek = 52;
+  }
+  let nextWeekUrl = "/agenda/" + nextWeek;
+  let prevWeekUrl = "/agenda/" + prevWeek;
+%>
+
+<div class="inline-flex rounded-md shadow-sm">
+    <button type="button" onclick="window.location.href = '<%= prevWeekUrl %>'" class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-700 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-sm dark:bg-gray-800 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400">
+      <
+    </button>
+    <button type="button" class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-700 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-sm dark:bg-gray-800 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400">
+      Week <%= week %>
+    </button>
+    <button type="button" onclick="window.location.href = '<%= nextWeekUrl %>'" class="py-3 px-4 inline-flex justify-center items-center gap-2 -ml-px first:rounded-l-lg first:ml-0 last:rounded-r-lg border font-medium bg-white text-gray-700 align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-sm dark:bg-gray-800 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400">
+      >
+    </button>
+</div>
