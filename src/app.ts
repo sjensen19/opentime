@@ -48,15 +48,33 @@ app.get("/", async (req: Request, res: Response) => {
 
     return res.render("index", {
         entree_user: req.session.entree_user,
-        // today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`),
-        today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, "2023-09-18"),
+        today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`),
+        // today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, "2023-09-18"),
     });
 });
 
 app.get("/agenda", async (req: Request, res: Response) => {
     if(!req.session.authenticated) return res.redirect("/oauth2");
 
-    return res.render("agenda");
+    // Get current week and redirect to that week
+    let currentDate = new Date();
+    let startDate = new Date(currentDate.getFullYear(), 0, 1);
+
+    let days = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    let current_week = Math.ceil((days + startDate.getDay() + 1) / 7);
+
+    return res.redirect(`/agenda/${current_week}`);
+});
+
+app.get("/agenda/:week", async (req: Request, res: Response) => {
+    if(!req.session.authenticated) return res.redirect("/oauth2");
+    if(!req.params.week) return res.redirect("/");
+
+    return res.render("agenda", {
+        entree_user: req.session.entree_user,
+        week: req.params.week,
+        classes: await TimeTableEntry.entriesPerWeek(req.session.student!.edu_group, Number.parseInt(req.params.week)),
+    });
 });
 
 app.get("/messages", async (req: Request, res: Response) => {
