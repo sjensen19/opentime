@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./src/app.ts",
-    "tailwind": "tailwindcss -i ./tailwind/tailwind.css -o ./src/public/css/tailwind.css --watch"
+    "tailwind": "tailwindcss -i ./tailwind/tailwind.css -o ./src/public/css/tailwind.css --watch",
+    "db": "ts-node-dev --transpile-only ./utils/setup_database.ts"
   },
   "keywords": [],
   "author": "",
