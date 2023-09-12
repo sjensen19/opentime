@@ -80,13 +80,7 @@ app.get("/agenda/:week", async (req: Request, res: Response) => {
 app.get("/messages", async (req: Request, res: Response) => {
     if(!req.session.authenticated) return res.redirect("/oauth2");
 
-    return res.render("messages/index");
-});
-
-app.get("/messages/create", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    return res.render("messages/create");
+    return res.redirect("https://www.outlook.com");
 });
 
 app.get("/absence", async (req: Request, res: Response) => {
