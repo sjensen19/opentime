@@ -27,7 +27,7 @@ declare module "express-session" {
 import EntreeAuthenticationManager from "./authentication/entree_authentication_manager";
 import { IStudent } from './interfaces/student';
 import { Student } from './helpers/student';
-import { TimeTableEntry } from './helpers/time_table_entry';
+import { TimeTableEntry } from './helpers/time_table';
 
 const app: Application = express();
 

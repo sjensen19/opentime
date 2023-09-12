@@ -1,5 +1,5 @@
 import Database from "../database/database";
-import { ITimeTableEntry } from "../interfaces/time_table_entry";
+import { ITimeTableEntry } from "../interfaces/time_table";
 
 /**
  * Class that represents an entry inside of a timetable
