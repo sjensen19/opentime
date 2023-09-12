@@ -23,7 +23,23 @@ const queries = [
        \`entree_uid\` VARCHAR(200) NOT NULL,
        \`edu_group\`  VARCHAR(100) NOT NULL,
        PRIMARY KEY (\`id\`)
-    );`
+    );`,
+    `CREATE TABLE \`opentime\`.\`teachers\`
+    (
+       \`id\`         INT NOT NULL auto_increment,
+       \`name\`       VARCHAR(100) NOT NULL,
+       PRIMARY KEY (\`id\`)
+    );`,
+    `CREATE TABLE \`opentime\`.\`absences\`
+    (
+       \`id\`           INT NOT NULL auto_increment,
+       \`student_id\`   INT NOT NULL,
+       \`timetable_id\` INT NOT NULL,
+       \`reason\`       VARCHAR(100) NOT NULL,
+       \`status\`       VARCHAR(20) NOT NULL,
+       \`reporter\`     VARCHAR(100) NOT NULL,
+       PRIMARY KEY (\`id\`)
+    );`,
 ];
 
 /**
