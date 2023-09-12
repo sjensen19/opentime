@@ -1,3 +1,5 @@
+import { AbsenceStatus } from "../enums/absence_status";
+
 /**
  * Represents an absence entry in the database
  */
