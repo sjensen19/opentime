@@ -27,7 +27,8 @@ declare module "express-session" {
 import EntreeAuthenticationManager from "./authentication/entree_authentication_manager";
 import { IStudent } from './interfaces/student';
 import { Student } from './helpers/student';
-import { TimeTableEntry } from './helpers/time_table';
+import studentRouter from './routes/student_route';
+import opRouter from './routes/op_route';
 
 const app: Application = express();
 
@@ -42,70 +43,6 @@ app.use(session({
 
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
-
-app.get("/", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    return res.render("index", {
-        entree_user: req.session.entree_user,
-        today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`),
-        // today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, "2023-09-18"),
-    });
-});
-
-app.get("/agenda", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    // Get current week and redirect to that week
-    let currentDate = new Date();
-    let startDate = new Date(currentDate.getFullYear(), 0, 1);
-
-    let days = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-    let current_week = Math.ceil((days + startDate.getDay() + 1) / 7);
-
-    return res.redirect(`/agenda/${current_week}`);
-});
-
-app.get("/agenda/:week", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-    if(!req.params.week) return res.redirect("/");
-
-    return res.render("agenda", {
-        entree_user: req.session.entree_user,
-        week: req.params.week,
-        classes: await TimeTableEntry.entriesPerWeek(req.session.student!.edu_group, Number.parseInt(req.params.week)),
-    });
-});
-
-app.get("/messages", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    return res.redirect("https://www.outlook.com");
-});
-
-app.get("/absence", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    return res.render("absence/index");
-});
-
-app.get("/absence/create", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    return res.render("absence/create");
-});
-
-app.get("/results", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    return res.render("results");
-});
-
-app.get("/profile", async (req: Request, res: Response) => {
-    if(!req.session.authenticated) return res.redirect("/oauth2");
-
-    return res.render("profile");
-});
 
 app.get("/oauth2", async (req: Request, res: Response) => {
     if(req.session.authenticated) {
@@ -150,6 +87,9 @@ app.get("/oauth2", async (req: Request, res: Response) => {
 
     // TODO: Refresh tokens
 });
+
+app.use("/", studentRouter);
+app.use("/op", opRouter);
 
 app.listen(3000, async () => {
     console.log("[INFO] Server gestart op http://localhost:3000");
