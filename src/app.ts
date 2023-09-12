@@ -61,15 +61,18 @@ app.get("/oauth2", async (req: Request, res: Response) => {
     setTimeout(async function() {
         let client = await EntreeAuthenticationManager.initializeClient();
         let tokens = await client.callback(process.env.KN_REDIRECT_URI, { code: req.query.code as string });
-        
-        if(!tokens || !tokens.access_token || !tokens.refresh_token) {
-            // TODO: Redirect to error page
-        }
 
         req.session.tokens = tokens;
         req.session.authenticated = true;
 
-        let entree_user = await client.userinfo(tokens);
+        let entree_user;
+
+        try {
+            entree_user = await client.userinfo(tokens);
+        } catch(e) {
+            return res.redirect("/failsafe");
+        }
+
         console.log(entree_user);
 
         req.session.entree_user = {
@@ -86,6 +89,15 @@ app.get("/oauth2", async (req: Request, res: Response) => {
     }, 500);
 
     // TODO: Refresh tokens
+});
+
+app.get("/failsafe", async (req: Request, res: Response) => {
+    return res.render("error/failsafe");
+});
+
+app.get("/failsafe/retry", async (req: Request, res: Response) => {
+    req.session.destroy((err) => console.error(err));
+    return res.redirect("/");
 });
 
 app.use("/", studentRouter);
