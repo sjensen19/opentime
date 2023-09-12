@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { TimeTableEntry } from "../helpers/time_table";
+import { TimeTable } from "../helpers/time_table";
 
 const router: Router = express.Router();
 
@@ -8,7 +8,7 @@ router.get("/", async (req: Request, res: Response) => {
 
     return res.render("index", {
         entree_user: req.session.entree_user,
-        today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`),
+        today: await TimeTable.entriesForDate(req.session.student!.edu_group, `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`),
         // today: await TimeTableEntry.entriesForDate(req.session.student!.edu_group, "2023-09-18"),
     });
 });
@@ -33,7 +33,7 @@ router.get("/agenda/:week", async (req: Request, res: Response) => {
     return res.render("agenda", {
         entree_user: req.session.entree_user,
         week: req.params.week,
-        classes: await TimeTableEntry.entriesPerWeek(req.session.student!.edu_group, Number.parseInt(req.params.week)),
+        classes: await TimeTable.entriesPerWeek(req.session.student!.edu_group, Number.parseInt(req.params.week)),
     });
 });
 

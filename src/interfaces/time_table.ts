@@ -1,7 +1,7 @@
 /**
  * Interface that represents an entry inside of a timetable
  */
-export interface ITimeTableEntry {
+export interface ITimeTable {
     /**
      * id of the TimeTableEntry
      */
