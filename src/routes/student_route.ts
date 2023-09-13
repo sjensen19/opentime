@@ -46,7 +46,9 @@ router.get("/messages", async (req: Request, res: Response) => {
 router.get("/absence", async (req: Request, res: Response) => {
     if(!req.session.authenticated) return res.redirect("/oauth2");
 
-    return res.render("absence/index");
+    return res.render("absence/index", {
+        entree_user: req.session.entree_user,
+    });
 });
 
 router.get("/absence/create", async (req: Request, res: Response) => {
