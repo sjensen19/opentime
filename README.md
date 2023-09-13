@@ -26,7 +26,19 @@ npm run db
 ```bash
 npm run tailwind
 ```
-6. Start de server
+5. Maak een .env bestand aan in de root van de repository
+6. Voeg de volgende variabelen toe aan het .env 
+Vul bovenstaande variables in met de volgende waardes:
+- _KN_ISSUER_URL_: De URL van de OpenID Connect provider (Kennisnet)
+- _KN_CLIENT_ID_: De client ID van de OpenID Connect provider (Kennisnet)
+- _KN_CLIENT_SECRET_: De client secret van de OpenID Connect provider (Kennisnet)
+- _KN_REDIRECT_URI_: De redirect URI van de OpenID Connect provider (Kennisnet)
+- _SESSION_SECRET_: Een willekeurige string die gebruikt wordt voor het opslaan van de sessie
+- _DB_HOST_: De host van de MySQL database
+- _DB_USER_: De gebruikersnaam van de MySQL database
+- _DB_NAME_: De naam van de MySQL database
+
+7. Start de server
 ```bash
 npm run dev
 ```
