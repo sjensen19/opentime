@@ -54,13 +54,17 @@ router.get("/absence", async (req: Request, res: Response) => {
 router.get("/absence/create", async (req: Request, res: Response) => {
     if(!req.session.authenticated) return res.redirect("/oauth2");
 
-    return res.render("absence/create");
+    return res.render("absence/create", {
+        entree_user: req.session.entree_user,
+    });
 });
 
 router.get("/results", async (req: Request, res: Response) => {
     if(!req.session.authenticated) return res.redirect("/oauth2");
 
-    return res.render("results");
+    return res.render("results", {
+        entree_user: req.session.entree_user,
+    });
 });
 
 router.get("/profile", async (req: Request, res: Response) => {
