@@ -27,7 +27,7 @@ npm run db
 npm run tailwind
 ```
 5. Maak een .env bestand aan in de root van de repository
-6. Voeg de volgende variabelen toe aan het .env:
+6. Voeg de volgende variabelen toe aan het .env bestand:
 - _KN_ISSUER_URL_: De URL van de OpenID Connect provider (Kennisnet)
 - _KN_CLIENT_ID_: De client ID van de OpenID Connect provider (Kennisnet)
 - _KN_CLIENT_SECRET_: De client secret van de OpenID Connect provider (Kennisnet)
